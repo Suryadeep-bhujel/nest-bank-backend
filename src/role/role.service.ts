@@ -1,4 +1,4 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdatePermissionOfRoleDto, UpdateRoleDto } from './dto/update-role.dto';
 import { BaseService } from 'src/common/services/base-service';
@@ -27,8 +27,42 @@ export class RoleService extends BaseService {
     ) {
         super()
     }
-    create(createRoleDto: CreateRoleDto) {
-        return 'This action adds a new role';
+    async create(createRoleDto: CreateRoleDto, user: User) {
+        try {
+            const { name, permissionNames } = createRoleDto
+            let role: Role | null = await this.roleRepository.findOne({ where: { name: ILike(`%${name}%`) } })
+            if (role) {
+                throw new BadRequestException('Role with this name already exists.');
+            }
+            role = await this.roleRepository.save({
+                name: name.trim(),
+                _oid: this.appService.generateOid()
+            } as Role)
+            const permissions = await this.permissionRepostiry.find({
+                where: {
+                    name: In(permissionNames),
+                }
+            })
+            const data: RoleHasPermission[] = [];
+            permissions.map(item => {
+                data.push({
+                    _oid: this.appService.generateOid(),
+                    roleId: role.id,
+                    permissionId: item.id
+                } as RoleHasPermission)
+            })
+            const savedPermissions = await this.roleHasPermissionRepository.save(data)
+            return {
+                message: 'Role added successfully.',
+                data: {
+                    permissions: savedPermissions,
+                    name: name
+                },
+            }
+
+        } catch (error) {
+            throw error;
+        }
     }
 
     private async roleList(search: RoleSearchDto) {
@@ -46,9 +80,9 @@ export class RoleService extends BaseService {
                 // "permissions.permissionId",
                 // "permissions.roleId",
             ])
-            // .leftJoin('role_has_permissions', 'rhp', 'rhp.roleId = roles.id')
-            // .addSelect('COUNT(rhp.permissionId)', 'permissionsCount') // 👈 count permissions
-            // .groupBy('roles.id');
+        // .leftJoin('role_has_permissions', 'rhp', 'rhp.roleId = roles.id')
+        // .addSelect('COUNT(rhp.permissionId)', 'permissionsCount') // 👈 count permissions
+        // .groupBy('roles.id');
         if (this.searchFieldName) {
             query = query.where({
                 [this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
@@ -71,7 +105,7 @@ export class RoleService extends BaseService {
             //     Object.assign(item ,{
             //         permissionCount: item.permissions?.length,
             //     })
-                
+
             //     return item;
             // })
             return {
@@ -115,7 +149,7 @@ export class RoleService extends BaseService {
             const data: RoleHasPermission[] = [];
             permissions.map(item => {
                 // if (!existingPermissions.find(existingPermissionItem => existingPermissionItem.permissionId === item.id)) {
-                    
+
                 // }
                 data.push({
                     _oid: this.appService.generateOid(),
@@ -123,7 +157,7 @@ export class RoleService extends BaseService {
                     permissionId: item.id
                 } as RoleHasPermission)
             })
-            await this.roleHasPermissionRepository.delete({roleId: role.id})
+            await this.roleHasPermissionRepository.delete({ roleId: role.id })
             // if(existingPermissions.length){
             // }
             const savedPermissions = await this.roleHasPermissionRepository.save(data)

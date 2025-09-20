@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, Query, UseGuards, Pu
 import { RoleService } from './role.service';
 import { CreateRoleDto } from './dto/create-role.dto';
 import { UpdatePermissionOfRoleDto, UpdateRoleDto } from './dto/update-role.dto';
-import { ApiOkResponse } from '@nestjs/swagger';
+import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { CommonListReponse } from 'src/common/dto/ListResponseDto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RoleSearchDto } from './dto/RoleSearchDto';
@@ -14,8 +14,10 @@ export class RoleController {
     constructor(private readonly roleService: RoleService) { }
 
     @Post()
-    create(@Body() createRoleDto: CreateRoleDto) {
-        return this.roleService.create(createRoleDto);
+    @UseGuards(JwtAuthGuard)
+    @ApiBody({ type: CreateRoleDto })
+    async create(@Body() createRoleDto: CreateRoleDto, @User() user: any) {
+        return await this.roleService.create(createRoleDto, user);
     }
 
     @Get("/list")
