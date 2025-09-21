@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateCustomerDto, CreateCustomerResponseDto } from '@src/customer/dto/create-customer.dto';
 import { UpdateCustomerDto } from '@src/customer/dto/update-customer.dto';
 import { CustomerAddressesService } from '@src/customer-addresses/customer-addresses.service';
@@ -96,15 +96,57 @@ export class CustomerService extends BaseService {
         }
     }
 
-    findOne(id: number) {
-        return `This action returns a #${id} customer`;
+    findOne(_oid: string) {
+        try {
+            const customer = this.customerRepository.findOne({ where: { _oid: _oid } })
+            if (!customer) {
+                throw new NotFoundException(`Customer with ID ${_oid} not found`);
+            }
+            return {
+                message: 'Customer retrieved successfully',
+                data: customer,
+            };
+        } catch (error) {
+            console.error('Error finding customer:', error);
+            throw new Error('Customer retrieval failed'); // Handle error appropriately
+        }
     }
 
-    update(id: number, updateCustomerDto: UpdateCustomerDto) {
-        return `This action updates a #${id} customer`;
+    async update(_oid: string, updateCustomerDto: UpdateCustomerDto) {
+        try {
+            console.log("updateCustomerDto", updateCustomerDto)
+            if (updateCustomerDto.dateOfBirth) {
+                updateCustomerDto.dateOfBirth = this.dateService.convertToDate(updateCustomerDto.dateOfBirth, "DD-MM-YYYY");
+            }
+            let customer = await this.customerRepository.findOne({ where: { _oid: _oid } })
+            if (!customer) {
+                throw new NotFoundException(`Customer with ID ${_oid} not found`);
+            }
+            Object.assign(customer, updateCustomerDto);
+            await this.customerRepository.save(customer);
+            return {
+                message: 'Customer updated successfully',
+                data: customer,
+            };
+        } catch (error) {
+            console.error('Error updating customer:', error);
+            throw new Error('Customer update failed'); // Handle error appropriately
+        }
     }
 
-    remove(id: number) {
-        return `This action removes a #${id} customer`;
+    async remove(_oid: string) {
+        try {
+            const customer = await this.customerRepository.findOne({ where: { _oid: _oid } })
+            if (!customer) {
+                throw new NotFoundException(`Customer with ID ${_oid} not found`);
+            }
+            await this.customerRepository.delete({ _oid });
+            return {
+                message: 'Customer removed successfully',
+            };
+        } catch (error) {
+            console.error('Error removing customer:', error);
+            throw new Error('Customer removal failed'); // Handle error appropriately
+        }
     }
 }

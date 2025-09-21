@@ -951,12 +951,12 @@
         ]
       }
     },
-    "/api/customers/{id}": {
+    "/api/customers/{_oid}": {
       "get": {
         "operationId": "findOne",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -966,14 +966,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -984,7 +977,7 @@
         "operationId": "update",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -1004,14 +997,7 @@
         },
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [
@@ -1022,7 +1008,7 @@
         "operationId": "remove",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -1032,14 +1018,7 @@
         ],
         "responses": {
           "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
+            "description": ""
           }
         },
         "tags": [

@@ -23,18 +23,18 @@ export class CustomerController {
     return await this.customerService.findAll(user, search);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.customerService.findOne(+id);
+  @Get(':_oid')
+  findOne(@Param('_oid') _oid: string) {
+    return this.customerService.findOne(_oid);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCustomerDto: UpdateCustomerDto) {
-    return this.customerService.update(+id, updateCustomerDto);
+  @Patch(':_oid')
+  update(@Param('_oid') _oid: string, @Body() updateCustomerDto: UpdateCustomerDto) {
+    return this.customerService.update(_oid, updateCustomerDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.customerService.remove(+id);
+  @Delete(':_oid')
+  remove(@Param('_oid') _oid: string) {
+    return this.customerService.remove(_oid);
   }
 }
