@@ -2065,6 +2065,172 @@
           "ModelHasRole"
         ]
       }
+    },
+    "/api/bank-account/add-bank-account": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateBankAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BankAccount"
+        ]
+      }
+    },
+    "/api/bank-account/list-bank-accounts": {
+      "get": {
+        "operationId": "findAll",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BankAccount"
+        ]
+      }
+    },
+    "/api/bank-account/account/{_oid}": {
+      "get": {
+        "operationId": "findOne",
+        "parameters": [
+          {
+            "name": "_oid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BankAccount"
+        ]
+      }
+    },
+    "/api/bank-account/update/{_oid}": {
+      "patch": {
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "_oid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateBankAccountDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BankAccount"
+        ]
+      }
+    },
+    "/api/bank-account/delete/{_oid}": {
+      "delete": {
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "_oid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "BankAccount"
+        ]
+      }
     }
   },
   "info": {
@@ -2495,6 +2661,99 @@
       "UpdateModelHasRoleDto": {
         "type": "object",
         "properties": {}
+      },
+      "CreateBankAccountDto": {
+        "type": "object",
+        "properties": {
+          "customerOids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ON_REVIEW",
+              "ACTIVE",
+              "INACTIVE",
+              "PENDING",
+              "SUSPENDED",
+              "CLOSED",
+              "UNDER_REVIEW",
+              "TERMINATED",
+              "DELETED",
+              "ARCHIVED",
+              "BLOCKED",
+              "FROZEN",
+              "DORMANT",
+              "SUSPENDED_FOR_VERIFICATION",
+              "SUSPENDED_FOR_COMPLIANCE",
+              "SUSPENDED_FOR_SECURITY",
+              "SUSPENDED_FOR_FRAUD",
+              "SUSPENDED_FOR_ABUSE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "customerOids",
+          "accountType",
+          "balance",
+          "currency",
+          "status"
+        ]
+      },
+      "UpdateBankAccountDto": {
+        "type": "object",
+        "properties": {
+          "customerOids": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "accountType": {
+            "type": "string"
+          },
+          "balance": {
+            "type": "number"
+          },
+          "currency": {
+            "type": "string"
+          },
+          "status": {
+            "enum": [
+              "ON_REVIEW",
+              "ACTIVE",
+              "INACTIVE",
+              "PENDING",
+              "SUSPENDED",
+              "CLOSED",
+              "UNDER_REVIEW",
+              "TERMINATED",
+              "DELETED",
+              "ARCHIVED",
+              "BLOCKED",
+              "FROZEN",
+              "DORMANT",
+              "SUSPENDED_FOR_VERIFICATION",
+              "SUSPENDED_FOR_COMPLIANCE",
+              "SUSPENDED_FOR_SECURITY",
+              "SUSPENDED_FOR_FRAUD",
+              "SUSPENDED_FOR_ABUSE"
+            ],
+            "type": "string"
+          }
+        }
       }
     }
   }

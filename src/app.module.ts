@@ -28,6 +28,8 @@ import { ModelHasRole } from '@src/model-has-role/entities/model-has-role.entity
 import { Customer } from '@src/customer/entities/customer.entity';
 import { CustomerAddress } from '@src/customer-addresses/entities/customer-address.entity';
 import { Staff } from '@src/staff/entities/staff.entity';
+import { BankAccountModule } from './bank-account/bank-account.module';
+import { BankAccount, BankAccountCustomers } from '@src/bank-account/entities/bank-account.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -49,6 +51,8 @@ import { Staff } from '@src/staff/entities/staff.entity';
         CustomerAddress,
         Staff,
         ModelHasRole,
+        BankAccount,
+        BankAccountCustomers
       ],
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // set to false in production!
@@ -70,7 +74,8 @@ import { Staff } from '@src/staff/entities/staff.entity';
     RoleModule,
     PermissionModule,
     RoleHasPermissionModule,
-    ModelHasRoleModule
+    ModelHasRoleModule,
+    BankAccountModule
   ],
   controllers: [AppController],
   providers: [AppService, DateService],
