@@ -1,5 +1,16 @@
 import { DataSource } from "typeorm";
 import { config } from 'dotenv';
+import { User } from "@src/users/entities/user.entity";
+import { Role } from "@src/role/entities/role.entity";
+import { Permission } from "@src/permission/entities/permission.entity";
+import { RoleHasPermission } from "@src/role-has-permission/entities/role-has-permission.entity";
+import { Branch } from "@src/branch/entities/branch.entity";
+import { BranchManager } from "@src/branch-manager/entities/branch-manager.entity";
+import { Customer } from "@src/customer/entities/customer.entity";
+import { CustomerAddress } from "@src/customer-addresses/entities/customer-address.entity";
+import { Staff } from "@src/staff/entities/staff.entity";
+import { ModelHasRole } from "@src/model-has-role/entities/model-has-role.entity";
+import { BankAccount, BankAccountCustomers } from "@src/bank-account/entities/bank-account.entity";
 type EntityClass = new (...args: any[]) => any;
 export class BaseSeeder {
     protected entities: EntityClass[] = []
@@ -18,7 +29,20 @@ export class BaseSeeder {
             password: process.env.DB_PASSWORD,
             database: process.env.DB_DATABASE,
             schema: process.env.DB_SCHEMA,
-            entities: [...this.entities],
+            entities: [
+                User,
+                Role,
+                Permission,
+                RoleHasPermission,
+                Branch,
+                BranchManager,
+                Customer,
+                CustomerAddress,
+                Staff,
+                ModelHasRole,
+                BankAccount,
+                BankAccountCustomers
+            ],
             synchronize: false,
         });
     }
