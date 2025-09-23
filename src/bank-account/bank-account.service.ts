@@ -124,10 +124,9 @@ export class BankAccountService extends BaseService {
                     status: this.searchFieldValue,
                 });
             } else {
-                // cast column to text to allow ILIKE on enums / non-text types
-                query = query.andWhere(`bank_accounts.${this.searchFieldName}::text ILIKE :search`, {
-                    search,
-                });
+                query = query.where({
+                    [this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
+                })
             }
 
         }
