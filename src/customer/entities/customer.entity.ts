@@ -1,19 +1,17 @@
+import { GenderType, MaritalStatus, Occupation, PersonCaste, PersonTitle } from "@bank-app-common/enum/SharedEnum";
+import { CommonEntity } from "src/shared/entities/CommonEntity";
 import { User } from "src/users/entities/user.entity";
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
-export enum GenderTypes  {
-    MALE = 'MALE', 
-    FEMALE = "FEMALE", 
-    OTHER = "OTHER",
-    NOT_SPECIFIED ="NOT_SPECIFIED"
-}
 @Entity({ name: 'customers' })
-export class Customer {
-    @PrimaryGeneratedColumn({ type: 'bigint' })
-    id: bigint;
+export class Customer extends CommonEntity {
+    @Column({ length: 30, unique: true})
+    officialIdNo: string
 
-    @Column({ length: 32 })
-    @Unique(['_oid'])
-    _oid: string;
+    @Column({ length: 50, default: null })
+    title?: PersonTitle;
+
+    @Column({ length: 150 })
+    guardianName?: string;
 
     @Column({ length: 50 })
     firstName?: string;

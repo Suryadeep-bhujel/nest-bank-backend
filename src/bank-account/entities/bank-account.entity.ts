@@ -18,14 +18,15 @@ export class BankAccount extends CommonEntity {
     @Column({ length: 3 })
     currency: string;
 
-    @Column({ type: "enum", enum: SharedStatus, default: SharedStatus.ON_REVIEW })
-    status: SharedStatus;
+    @Column({ type: "enum", enum: BankAccountStatusType, default: BankAccountStatusType.ON_REVIEW })
+    status: BankAccountStatusType;
 
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    createdAt: Date;
+    @Column({ nullable: false })
+    branchCode: string;
 
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt: Date;
+    @ManyToOne(() => Branch, (branch) => branch.id, { nullable: false, onUpdate: "CASCADE", onDelete: "SET NULL" })
+    @JoinColumn({ name: 'branchCode' })
+    branchInfo: Branch | null;
 
     @OneToMany(() => BankAccountCustomers, (rhp) => rhp.bankAccount)
     customers?: BankAccountCustomers[];
@@ -45,11 +46,5 @@ export class BankAccountCustomers extends CommonEntity {
     @ManyToOne(() => Customer, customer => customer.id)
     @JoinColumn({ name: 'customerId' })
     customer: Customer;
-
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    createdAt: Date;
-
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt: Date;
 }
 

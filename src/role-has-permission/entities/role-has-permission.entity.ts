@@ -20,10 +20,4 @@ export class RoleHasPermission extends CommonEntity {
     @ManyToOne(() => Permission, (role) => role.id, { nullable: false })
     @JoinColumn({ name: 'permissionId' })
     permission: Permission;
-
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    createdAt?: Date;
-
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt?: Date;
 }

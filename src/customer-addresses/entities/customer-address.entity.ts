@@ -63,12 +63,6 @@ export class CustomerAddress extends CommonEntity {
     @Column({ type: "bool", default: false })
     isDeleted?: boolean;
 
-    @Column({ type: "date", default: () => "CURRENT_TIMESTAMP" })
-    createdAt?: Date;
-
-    @Column({ type: "date", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt?: Date;
-
     @Column({ type: "date", nullable: true })
     deletedAt?: Date;
 

@@ -16,12 +16,6 @@ export class Role extends CommonEntity {
     @OneToMany(() => RoleHasPermission, (rhp) => rhp.role)
     permissions?: RoleHasPermission[];
 
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    createdAt?: Date;
-
-    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
-    updatedAt?: Date;
-
     @ManyToMany(() => User, user => user.roles)
     users: User[];
 
