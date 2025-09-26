@@ -6,7 +6,7 @@ import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
 import { CommonListReponse } from 'src/common/dto/ListResponseDto';
 import { JwtAuthGuard } from 'src/auth/jwt-auth.guard';
 import { RoleSearchDto } from './dto/RoleSearchDto';
-import { User } from '@src/users/decorators/user.decorator';
+import { AuthUser } from '@src/users/decorators/user.decorator';
 import { RoleDetailResponseDto } from './dto/role-detail.dto';
 
 @Controller('role')
@@ -16,7 +16,7 @@ export class RoleController {
     @Post()
     @UseGuards(JwtAuthGuard)
     @ApiBody({ type: CreateRoleDto })
-    async create(@Body() createRoleDto: CreateRoleDto, @User() user: any) {
+    async create(@Body() createRoleDto: CreateRoleDto, @AuthUser() user: any) {
         return await this.roleService.create(createRoleDto, user);
     }
 
@@ -30,7 +30,7 @@ export class RoleController {
     @Put("/update-permission/:oid")
     @UseGuards(JwtAuthGuard)
     // @ApiOkResponse({type: {}})
-    async updatePermissionOfRole(@Param("oid") oid: string, @Body() requestBody: UpdatePermissionOfRoleDto, @User() user: any) {
+    async updatePermissionOfRole(@Param("oid") oid: string, @Body() requestBody: UpdatePermissionOfRoleDto, @AuthUser() user: any) {
         return await this.roleService.updatePermissionOfRole(oid, requestBody, user);
     }
     @Get(':oid')

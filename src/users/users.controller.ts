@@ -4,7 +4,7 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { UserSearchDto } from './dto/users-search.dto';
-import { User } from './decorators/user.decorator';
+import { AuthUser } from './decorators/user.decorator';
 import { ApiExtraModels, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CommonListReponse } from 'src/common/dto/ListResponseDto';
 import { UserRolesRequestDto } from './dto/user-roles-request.dto';
@@ -20,13 +20,13 @@ export class UsersController {
   @UseGuards(JwtAuthGuard)
   // @ApiQuery({ name: 'search', type: UserSearchDto })
   @ApiOkResponse({ type: CommonListReponse })
-  async findAll(@Query() search: UserSearchDto, @User() user) {
+  async findAll(@Query() search: UserSearchDto, @AuthUser() user) {
     return await this.usersService.findAll(search, user);
   }
 
   @Post("/assign-role/:userOid")
   @UseGuards(JwtAuthGuard)
-  async assignUserRole(@Param("userOid") userOid: string, @Body() roles :UserRolesRequestDto, @User() user){
+  async assignUserRole(@Param("userOid") userOid: string, @Body() roles: UserRolesRequestDto, @AuthUser() user) {
     return await this.usersService.assignRoleToUser(userOid, roles, user)
   }
 

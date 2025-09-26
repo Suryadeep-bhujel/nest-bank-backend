@@ -2,7 +2,7 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } f
 import { CustomerService } from '@src/customer/customer.service';
 import { CreateCustomerDto } from '@src/customer/dto/create-customer.dto';
 import { UpdateCustomerDto } from '@src/customer/dto/update-customer.dto';
-import { User } from '@src/users/decorators/user.decorator';
+import { AuthUser} from '@src/users/decorators/user.decorator';
 import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
 import { CustomerSearchDto } from '@src/customer/dto/customer-search.dto';
 
@@ -12,14 +12,14 @@ export class CustomerController {
 
   @Post("/register-new-customer")
   @UseGuards(JwtAuthGuard)
-  async create(@Body() createCustomerDto: CreateCustomerDto, @User() user: any) {
+  async create(@Body() createCustomerDto: CreateCustomerDto, @AuthUser() user: any) {
     console.log("createCustomerDto", createCustomerDto, user);
     return await this.customerService.create(createCustomerDto, user);
   }
 
   @Get("/all-customers")
   @UseGuards(JwtAuthGuard)
-  async findAll(@Query() search: CustomerSearchDto, @User() user: any) {
+  async findAll(@Query() search: CustomerSearchDto, @AuthUser() user: any) {
     return await this.customerService.findAll(user, search);
   }
 
