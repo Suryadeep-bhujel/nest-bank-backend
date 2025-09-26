@@ -1,9 +1,10 @@
 import { faker } from '@faker-js/faker';
 import { AppService } from '@src/app.service';
-import { Customer, GenderTypes } from '@src/customer/entities/customer.entity';
+import { Customer } from '@src/customer/entities/customer.entity';
 import chunk from 'lodash/chunk';
 import { User } from '@src/users/entities/user.entity';
 import { BaseSeeder } from '@src/seeds/base-seeder';
+import { GenderType, MaritalStatus, Occupation, PersonTitle } from '@bank-app-common/enum/SharedEnum';
 
 //npx ts-node src/seeds/customers.seeder.ts
 // run below command to seed data 
@@ -23,7 +24,15 @@ async function seed() {
         customer.firstName = faker.person.firstName();
         customer.middleName = faker.person.middleName();
         customer.lastName = faker.person.lastName();
-        customer.gender = faker.helpers.arrayElement(Object.values(GenderTypes))
+        customer.gender = faker.helpers.arrayElement(Object.values(GenderType))
+        customer.title = faker.helpers.arrayElement(Object.values(PersonTitle))
+        customer.guardianName = faker.person.fullName();
+        customer.nationality = "IN"
+        customer.countryOfResidence = "IN"
+        customer.occupation = faker.helpers.arrayElement(Object.values(Occupation))
+        customer.maritalStatus = faker.helpers.arrayElement(Object.values(MaritalStatus))
+
+
         customer.phoneNumber = faker.phone.number({style: 'international'})
         customer.addedByStaffId = BigInt(1)
         return customer;
