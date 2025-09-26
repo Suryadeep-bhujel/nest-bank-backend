@@ -22,25 +22,37 @@ export class BranchController {
 
   @Get("/all-branches")
   @UseGuards(JwtAuthGuard)
-  @ApiOkResponse({type : CommonListReponse})
+  @ApiOkResponse({ type: CommonListReponse })
   @ApiOperation({ operationId: "findAll" })
   findAll(@Query() search: BranchSearchDto) {
     console.log("search", search);
     return this.branchService.findAll(search);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.branchService.findOne(+id);
+  @Get("/branch-dropdown")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: CommonListReponse })
+  @ApiOperation({ operationId: "branchDropdown" })
+  branchDropdown(@Query() search: BranchSearchDto) {
+    return this.branchService.branchDropdown(search);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: string, @Body() updateBranchDto: UpdateBranchDto) {
-    return this.branchService.update(+id, updateBranchDto);
+
+  @Get(':_oid')
+  @UseGuards(JwtAuthGuard)
+  async findOne(@Param('_oid') _oid: string) {
+    return await this.branchService.findOne(_oid);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.branchService.remove(+id);
+  @Patch(':_oid')
+  @UseGuards(JwtAuthGuard)
+  async update(@Param('_oid') _oid: string, @Body() updateBranchDto: UpdateBranchDto) {
+    return this.branchService.update(_oid, updateBranchDto);
+  }
+
+  @Delete(':_oid')
+  @UseGuards(JwtAuthGuard)
+  async remove(@Param('_oid') _oid: string) {
+    return this.branchService.remove(_oid);
   }
 }
