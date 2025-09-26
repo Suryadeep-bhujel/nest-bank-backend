@@ -30,6 +30,7 @@ import { CustomerAddress } from '@src/customer-addresses/entities/customer-addre
 import { Staff } from '@src/staff/entities/staff.entity';
 import { BankAccountModule } from './bank-account/bank-account.module';
 import { BankAccount, BankAccountCustomers } from '@src/bank-account/entities/bank-account.entity';
+import { AddOnFeatureModule } from '@src/add-on-feature/add-on-feature.module';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -75,7 +76,8 @@ import { BankAccount, BankAccountCustomers } from '@src/bank-account/entities/ba
     PermissionModule,
     RoleHasPermissionModule,
     ModelHasRoleModule,
-    BankAccountModule
+    BankAccountModule,
+    AddOnFeatureModule
   ],
   controllers: [AppController],
   providers: [AppService, DateService],
