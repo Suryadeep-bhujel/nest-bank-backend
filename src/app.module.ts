@@ -31,6 +31,7 @@ import { Staff } from '@src/staff/entities/staff.entity';
 import { BankAccountModule } from './bank-account/bank-account.module';
 import { BankAccount, BankAccountCustomers } from '@src/bank-account/entities/bank-account.entity';
 import { AddOnFeatureModule } from '@src/add-on-feature/add-on-feature.module';
+import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -53,7 +54,8 @@ import { AddOnFeatureModule } from '@src/add-on-feature/add-on-feature.module';
         Staff,
         ModelHasRole,
         BankAccount,
-        BankAccountCustomers
+        BankAccountCustomers,
+        AddOnFeature
       ],
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // set to false in production!
