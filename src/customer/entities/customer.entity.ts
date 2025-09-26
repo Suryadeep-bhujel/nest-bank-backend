@@ -22,15 +22,38 @@ export class Customer extends CommonEntity {
     @Column({ length: 50 })
     lastName?: string;
 
-    @Column({ type: "enum", enum: GenderTypes, default: "NOT_SPECIFIED" })
-    gender?: string;
+    @Column({ type: "enum", enum: GenderType, default: GenderType.UNDISCLOSED })
+    gender?: GenderType;
 
 
     @Column()
     email: string;
 
-    @Column()
+    @Column({ length: 10, default: null })
+    mobileNoCountryCode?: string;
+
+    @Column({ length: "20", default: null })
     phoneNumber?: string;
+
+    @Column({ length: 20, default: null })
+    telephone?: string;
+
+
+    @Column({ type: "enum", enum: Occupation, default: Occupation.UNDISCLOSED })
+    occupation?: Occupation
+
+    @Column({ type: "enum", enum: MaritalStatus, default: MaritalStatus.UNDISCLOSED })
+    maritalStatus?: MaritalStatus
+
+    @Column({ type: "enum", enum: PersonCaste, default: PersonCaste.UNDISCLOSED })
+    category?: PersonCaste
+
+    @Column({ length: 10 })
+    nationality?: string
+
+    @Column({ length: 10 })
+    countryOfResidence?: string
+
 
     @Column({ nullable: true, type: "timestamptz" })
     dateOfBirth?: Date;

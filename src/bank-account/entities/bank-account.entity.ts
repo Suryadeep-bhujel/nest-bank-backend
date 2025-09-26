@@ -1,12 +1,13 @@
+import { BankAccountStatusType } from "@bank-app-common/enum/SharedEnum";
 import { CommonEntity } from "@src/shared/entities/CommonEntity";
-import { Customer } from "src/customer/entities/customer.entity";
-import { SharedStatus } from "src/shared/utils/SharedEnum";
+import { Customer } from "@src/customer/entities/customer.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Branch } from "src/branch/entities/branch.entity";
 
 @Entity({ name: 'bank_accounts' })
 export class BankAccount extends CommonEntity {
 
-    @Column({ length: 32 , unique: true})
+    @Column({ length: 32, unique: true })
     accountNumber: string;
 
     @Column()
