@@ -19,7 +19,9 @@
     "noFallthroughCasesInSwitch": false,
     "paths": {
       "src/*": ["./src/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@bank-app-common/*" : ["@bank-app-common/*"]
+
     },
     "esModuleInterop": true,
 
