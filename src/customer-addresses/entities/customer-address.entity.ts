@@ -1,8 +1,7 @@
 
-import { AddressStatus } from "@bank-app-common/enum/SharedEnum";
+import { AddressStatus, AddressType } from "@bank-app-common/enum/SharedEnum";
 import { Customer } from "src/customer/entities/customer.entity";
 import { CommonEntity } from "src/shared/entities/CommonEntity";
-import { AddressType } from "src/shared/utils/SharedEnum";
 import { User } from "src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
