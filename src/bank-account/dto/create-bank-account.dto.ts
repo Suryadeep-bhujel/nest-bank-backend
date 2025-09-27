@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsBoolean, IsDate, IsEmail, IsNotEmpty, IsOptional, IsString } from "class-validator";
 
-import { AccountType, AddressType, BankAccountStatusType, ChooseOptions, EducationalQualification, GenderType, MaritalStatus, Occupation, PersonCaste, PersonTitle } from "@bank-app-common/enum/SharedEnum";
+import { AccountType, AddressType, BankAccountStatusType, ChooseOptions, DocumentType, EducationalQualification, GenderType, MaritalStatus, Occupation, PersonCaste, PersonTitle } from "@bank-app-common/enum/SharedEnum";
 
 export class CreateBankAccountDto {
     // @ApiProperty()
@@ -203,12 +203,12 @@ export class KycInfoRequestDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    kycDocumentProvided: string;
+    kycDocumentProvided: ChooseOptions;
 
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    nominationRequired: string;
+    nominationRequired: ChooseOptions;
 
     @ApiProperty()
     @IsOptional()
@@ -223,7 +223,7 @@ export class KycInfoRequestDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    kycDocumentType: string;
+    kycDocumentType: DocumentType;
 
     @ApiProperty()
     @IsNotEmpty()
@@ -237,7 +237,7 @@ export class KycInfoRequestDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    requestedAddOn: string;
+    requestedAddOn: ChooseOptions;
 }
 export class AddOnInfoRequestDto {
 
@@ -269,7 +269,7 @@ export class AddOnInfoRequestDto {
     @ApiProperty()
     @IsNotEmpty()
     @IsString()
-    creditCard: ChooseOptions;
+    creditCard: ChooseOptions
 }
 export class CreateBankAccountRequestDto {
     @ApiProperty()
