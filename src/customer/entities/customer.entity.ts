@@ -1,10 +1,10 @@
-import { GenderType, MaritalStatus, Occupation, PersonCaste, PersonTitle } from "@bank-app-common/enum/SharedEnum";
+import { ChooseOptions, DocumentType, GenderType, MaritalStatus, Occupation, PersonCaste, PersonTitle } from "@bank-app-common/enum/SharedEnum";
 import { CommonEntity } from "src/shared/entities/CommonEntity";
 import { User } from "src/users/entities/user.entity";
 import { BeforeInsert, Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 @Entity({ name: 'customers' })
 export class Customer extends CommonEntity {
-    @Column({ length: 30, unique: true})
+    @Column({ length: 30, unique: true })
     officialIdNo: string
 
     @Column({ length: 50, default: null })
@@ -16,7 +16,7 @@ export class Customer extends CommonEntity {
     @Column({ length: 50 })
     firstName?: string;
 
-    @Column({ length: 50 })
+    @Column({ length: 50, nullable: true })
     middleName?: string;
 
     @Column({ length: 50 })
@@ -55,8 +55,32 @@ export class Customer extends CommonEntity {
     countryOfResidence?: string
 
 
-    @Column({ nullable: true, type: "timestamptz" })
+    @Column({ nullable: true, type: "date" })
     dateOfBirth?: Date;
+
+    @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
+    kycDocumentProvided?: ChooseOptions
+
+    @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
+    nominationRequired?: ChooseOptions
+
+    @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
+    requestedDebitCard?: ChooseOptions
+
+    @Column({ length: 150, type: "varchar" })
+    introducerName?: string
+
+    @Column({ length: 50, type: "varchar" })
+    panNumber?: string
+
+    @Column({ type: "enum", enum: DocumentType, default: DocumentType.OTHER })
+    kycDocumentType?: DocumentType
+
+    @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
+    requestedAddOn?: ChooseOptions
+
+    @Column({ type: "double precision", nullable: true })
+    perAnnumIncome?: number
 
     @Column()
     addedByStaffId?: bigint;
