@@ -34,6 +34,8 @@ export class AddOnFeature extends CommonEntity {
     @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
     creditCard: ChooseOptions
 
+    @Column({ type: "enum", enum: ChooseOptions, default: ChooseOptions.NOT_APPLICABLE })
+    requestedDebitCard: ChooseOptions
     @Column()
     addedByStaffId?: bigint;
 
