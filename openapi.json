@@ -323,12 +323,83 @@
         ]
       }
     },
-    "/api/branch/{id}": {
+    "/api/branch/branch-dropdown": {
+      "get": {
+        "operationId": "branchDropdown",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonListReponse"
+                }
+              }
+            }
+          }
+        },
+        "summary": "",
+        "tags": [
+          "Branch Management"
+        ]
+      }
+    },
+    "/api/branch/{_oid}": {
       "get": {
         "operationId": "findOne",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -342,7 +413,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object"
                 }
               }
             }
@@ -356,7 +427,7 @@
         "operationId": "update",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -394,7 +465,7 @@
         "operationId": "remove",
         "parameters": [
           {
-            "name": "id",
+            "name": "_oid",
             "required": true,
             "in": "path",
             "schema": {
@@ -408,7 +479,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "type": "object"
                 }
               }
             }
@@ -2075,7 +2146,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/CreateBankAccountDto"
+                "$ref": "#/components/schemas/CreateBankAccountRequestDto"
               }
             }
           }
@@ -2229,6 +2300,152 @@
         },
         "tags": [
           "BankAccount"
+        ]
+      }
+    },
+    "/api/add-on-feature": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateAddOnFeatureDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AddOnFeature"
+        ]
+      },
+      "get": {
+        "operationId": "findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AddOnFeature"
+        ]
+      }
+    },
+    "/api/add-on-feature/{id}": {
+      "get": {
+        "operationId": "findOne",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AddOnFeature"
+        ]
+      },
+      "patch": {
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateAddOnFeatureDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AddOnFeature"
+        ]
+      },
+      "delete": {
+        "operationId": "remove",
+        "parameters": [
+          {
+            "name": "id",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "AddOnFeature"
         ]
       }
     }
@@ -2662,22 +2879,29 @@
         "type": "object",
         "properties": {}
       },
-      "CreateBankAccountDto": {
+      "AccountInfoRequestDto": {
         "type": "object",
         "properties": {
-          "customerOids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "accountType": {
+          "branchCode": {
             "type": "string"
           },
-          "balance": {
-            "type": "number"
-          },
-          "currency": {
+          "accountType": {
+            "enum": [
+              "PERSONAL",
+              "SAVINGS",
+              "CHECKING_OR_CURRENT",
+              "JOINT",
+              "BUSINESS",
+              "SALARY",
+              "FIXED_DEPOSIT",
+              "RECURRING_DEPOSIT",
+              "NRI",
+              "TRUST",
+              "STUDENT",
+              "RETIREMENT",
+              "INVESTMENT",
+              "LOAN"
+            ],
             "type": "string"
           },
           "status": {
@@ -2705,22 +2929,411 @@
           }
         },
         "required": [
-          "customerOids",
+          "branchCode",
           "accountType",
-          "balance",
-          "currency",
           "status"
+        ]
+      },
+      "PersonalInfoRequestDto": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "enum": [
+              "MR",
+              "MRS",
+              "MISS",
+              "MS",
+              "DR",
+              "PROF",
+              "REV",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "firstName": {
+            "type": "string"
+          },
+          "middleName": {
+            "type": "string"
+          },
+          "lastName": {
+            "type": "string"
+          },
+          "guardianName": {
+            "type": "string"
+          },
+          "gender": {
+            "enum": [
+              "MALE",
+              "FEMALE",
+              "NON_BINARY",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "dateOfBirth": {
+            "type": "string"
+          },
+          "maritalStatus": {
+            "enum": [
+              "SINGLE",
+              "MARRIED",
+              "DIVORCED",
+              "WIDOWED",
+              "SEPARATED",
+              "PARTNERED",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "category": {
+            "enum": [
+              "GENERAL",
+              "OBC",
+              "SC",
+              "ST",
+              "EWS",
+              "BRAHMIN",
+              "CHHETRI",
+              "NEWAR",
+              "TAMANG",
+              "MAGAR",
+              "RAI",
+              "LIMBU",
+              "SHERPA",
+              "THARU",
+              "DALIT",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "occupation": {
+            "enum": [
+              "UNEMPLOYED",
+              "STUDENT",
+              "SELF_EMPLOYED",
+              "EMPLOYED",
+              "RETIRED",
+              "BUSINESS_OWNER",
+              "FREELANCER",
+              "GOVERNMENT_EMPLOYEE",
+              "PRIVATE_SECTOR_EMPLOYEE",
+              "AGRICULTURE",
+              "HOMEMAKER",
+              "MILITARY",
+              "TEACHER",
+              "ENGINEER",
+              "DOCTOR",
+              "LAWYER",
+              "ARTIST",
+              "SCIENTIST",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "education": {
+            "enum": [
+              "NO_FORMAL_EDUCATION",
+              "PRIMARY_EDUCATION",
+              "SECONDARY_EDUCATION",
+              "HIGH_SCHOOL",
+              "DIPLOMA",
+              "BACHELORS",
+              "MASTERS",
+              "DOCTORATE",
+              "POST_DOCTORATE",
+              "VOCATIONAL_TRAINING",
+              "PROFESSIONAL_CERTIFICATION",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "nationality": {
+            "type": "string"
+          },
+          "countryOfBirth": {
+            "type": "string"
+          },
+          "countryOfResidence": {
+            "type": "string"
+          }
+        },
+        "required": [
+          "firstName",
+          "lastName",
+          "guardianName",
+          "gender",
+          "dateOfBirth",
+          "maritalStatus",
+          "category",
+          "occupation",
+          "education",
+          "nationality",
+          "countryOfBirth",
+          "countryOfResidence"
+        ]
+      },
+      "AddressInfoRequestDto": {
+        "type": "object",
+        "properties": {
+          "addressLabel": {
+            "enum": [
+              "HOME",
+              "WORK",
+              "OTHER",
+              "NOT_SPECIFIED"
+            ],
+            "type": "string"
+          },
+          "addressLine1": {
+            "type": "string"
+          },
+          "addressLine2": {
+            "type": "string"
+          },
+          "houseNo": {
+            "type": "string"
+          },
+          "buildingName": {
+            "type": "string"
+          },
+          "flatNo": {
+            "type": "string"
+          },
+          "streetName": {
+            "type": "string"
+          },
+          "streetNo": {
+            "type": "string"
+          },
+          "landmark": {
+            "type": "string"
+          },
+          "district": {
+            "type": "string"
+          },
+          "city": {
+            "type": "string"
+          },
+          "state": {
+            "type": "string"
+          },
+          "country": {
+            "type": "string"
+          },
+          "postalCode": {
+            "type": "string"
+          },
+          "phoneNumber": {
+            "type": "string"
+          },
+          "isDefault": {
+            "type": "boolean"
+          },
+          "remarks": {
+            "type": "string"
+          }
+        }
+      },
+      "ContactInfoRequestDto": {
+        "type": "object",
+        "properties": {
+          "telephone": {
+            "type": "string"
+          },
+          "mobileNo": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string",
+            "format": "email"
+          }
+        },
+        "required": [
+          "telephone",
+          "mobileNo",
+          "email"
+        ]
+      },
+      "KycInfoRequestDto": {
+        "type": "object",
+        "properties": {
+          "kycDocumentProvided": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "nominationRequired": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "introducerName": {
+            "type": "string"
+          },
+          "panNumber": {
+            "type": "string"
+          },
+          "kycDocumentType": {
+            "enum": [
+              "PASSPORT",
+              "NATIONAL_ID",
+              "AADHAAR",
+              "DRIVING_LICENSE",
+              "VOTER_ID",
+              "SOCIAL_SECURITY_NUMBER",
+              "TAX_IDENTIFICATION_NUMBER",
+              "RESIDENCE_PERMIT",
+              "BIRTH_CERTIFICATE",
+              "CITIZENSHIP_CERTIFICATE",
+              "NRIC",
+              "HEALTH_CARD",
+              "MILITARY_ID",
+              "STUDENT_ID",
+              "EMPLOYEE_ID",
+              "OTHER",
+              "UNDISCLOSED"
+            ],
+            "type": "string"
+          },
+          "officialIdNo": {
+            "type": "string"
+          },
+          "perAnnumIncome": {
+            "type": "number"
+          },
+          "requestedAddOn": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "kycDocumentProvided",
+          "nominationRequired",
+          "panNumber",
+          "kycDocumentType",
+          "officialIdNo",
+          "requestedAddOn"
+        ]
+      },
+      "AddOnInfoRequestDto": {
+        "type": "object",
+        "properties": {
+          "requestedDebitCard": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "eStatement": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "chequeBook": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "mobileBanking": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "internetBanking": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          },
+          "creditCard": {
+            "enum": [
+              "YES",
+              "NO",
+              "NOT_APPLICABLE"
+            ],
+            "type": "string"
+          }
+        },
+        "required": [
+          "requestedDebitCard",
+          "eStatement",
+          "chequeBook",
+          "mobileBanking",
+          "internetBanking",
+          "creditCard"
+        ]
+      },
+      "CreateBankAccountRequestDto": {
+        "type": "object",
+        "properties": {
+          "accountInfo": {
+            "$ref": "#/components/schemas/AccountInfoRequestDto"
+          },
+          "personalInfo": {
+            "$ref": "#/components/schemas/PersonalInfoRequestDto"
+          },
+          "permanentAddressInfo": {
+            "$ref": "#/components/schemas/AddressInfoRequestDto"
+          },
+          "residentialAddressInfo": {
+            "$ref": "#/components/schemas/AddressInfoRequestDto"
+          },
+          "correspondingAddressInfo": {
+            "$ref": "#/components/schemas/AddressInfoRequestDto"
+          },
+          "contactInfo": {
+            "$ref": "#/components/schemas/ContactInfoRequestDto"
+          },
+          "kycInfo": {
+            "$ref": "#/components/schemas/KycInfoRequestDto"
+          },
+          "addOnInfo": {
+            "$ref": "#/components/schemas/AddOnInfoRequestDto"
+          }
+        },
+        "required": [
+          "accountInfo",
+          "personalInfo",
+          "permanentAddressInfo",
+          "residentialAddressInfo",
+          "correspondingAddressInfo",
+          "contactInfo",
+          "kycInfo",
+          "addOnInfo"
         ]
       },
       "UpdateBankAccountDto": {
         "type": "object",
         "properties": {
-          "customerOids": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
           "accountType": {
             "type": "string"
           },
@@ -2754,6 +3367,14 @@
             "type": "string"
           }
         }
+      },
+      "CreateAddOnFeatureDto": {
+        "type": "object",
+        "properties": {}
+      },
+      "UpdateAddOnFeatureDto": {
+        "type": "object",
+        "properties": {}
       }
     }
   }
