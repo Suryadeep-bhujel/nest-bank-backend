@@ -1,7 +1,7 @@
 import { BankAccountStatusType } from "@bank-app-common/enum/SharedEnum";
 import { CommonEntity } from "@src/shared/entities/CommonEntity";
 import { Customer } from "@src/customer/entities/customer.entity";
-import { Column, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
+import { Column, Double, Entity, JoinColumn, ManyToOne, OneToMany } from "typeorm";
 import { Branch } from "src/branch/entities/branch.entity";
 
 @Entity({ name: 'bank_accounts' })
@@ -13,21 +13,29 @@ export class BankAccount extends CommonEntity {
     @Column()
     accountType: string;
 
-    @Column()
-    balance: number;
+    @Column('decimal', {
+        precision: 15,
+        scale: 6,
+        nullable: true,
+        transformer: {
+            to: (value?: number | null) => (value === null || value === undefined) ? null : value.toString(),
+            from: (value: string | null) => (value === null ? null : parseFloat(value)),
+        },
+    })
+    balance?: number | null;
 
     @Column({ length: 3 })
-    currency: string;
+    currency?: string;
 
     @Column({ type: "enum", enum: BankAccountStatusType, default: BankAccountStatusType.ON_REVIEW })
     status: BankAccountStatusType;
 
-    @Column({ nullable: false })
-    branchCode: string;
+    @Column({ length: 32, type: "varchar"})
+    branchOid: string;
 
-    @ManyToOne(() => Branch, (branch) => branch.id, { nullable: false, onUpdate: "CASCADE", onDelete: "SET NULL" })
-    @JoinColumn({ name: 'branchCode' })
-    branchInfo: Branch | null;
+    @ManyToOne(() => Branch, (branch) => branch._oid, { nullable: false, onUpdate: "CASCADE", onDelete: "SET NULL" })
+    @JoinColumn({ name: 'branchOid', referencedColumnName: '_oid' })
+    branchInfo?: Branch | null; 
 
     @OneToMany(() => BankAccountCustomers, (rhp) => rhp.bankAccount)
     customers?: BankAccountCustomers[];
