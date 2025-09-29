@@ -2448,6 +2448,179 @@
           "AddOnFeature"
         ]
       }
+    },
+    "/api/country/add-country": {
+      "post": {
+        "operationId": "create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateCountryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUpdateResponseDto"
+                }
+              }
+            }
+          },
+          "201": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUpdateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Country Management"
+        ]
+      }
+    },
+    "/api/country/list": {
+      "get": {
+        "operationId": "findAll",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountrySearchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonListReponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Country Management"
+        ]
+      }
+    },
+    "/api/country/country-dropdown": {
+      "get": {
+        "operationId": "getCountryDropdown",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CountrySearchDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonListReponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Country Management"
+        ]
+      }
+    },
+    "/api/country/detail/{_oid}": {
+      "get": {
+        "operationId": "findOne",
+        "parameters": [
+          {
+            "name": "_oid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUpdateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Country Management"
+        ]
+      }
+    },
+    "/api/country/update/{_oid}": {
+      "patch": {
+        "operationId": "update",
+        "parameters": [
+          {
+            "name": "_oid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/UpdateCountryDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateUpdateResponseDto"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Country Management"
+        ]
+      }
     }
   },
   "info": {
@@ -3375,6 +3548,192 @@
       "UpdateAddOnFeatureDto": {
         "type": "object",
         "properties": {}
+      },
+      "CreateCountryDto": {
+        "type": "object",
+        "properties": {
+          "_oid": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "countryName": {
+            "type": "string",
+            "example": "India"
+          },
+          "countryCode": {
+            "type": "string",
+            "example": "IN"
+          },
+          "dialCode": {
+            "type": "string",
+            "example": "+91"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "SUSPENDED",
+              "ON_HOLD",
+              "BLACK_LISTED"
+            ],
+            "type": "string",
+            "example": "ACTIVE"
+          },
+          "sanctionStatus": {
+            "enum": [
+              "SANCTIONED",
+              "NOT_SANCTIONED",
+              "PENDING",
+              "UNDER_REVIEW",
+              "CLEARED"
+            ],
+            "type": "string",
+            "example": "CLEARED"
+          }
+        },
+        "required": [
+          "countryName",
+          "countryCode",
+          "dialCode"
+        ]
+      },
+      "CountryResponseDto": {
+        "type": "object",
+        "properties": {
+          "countryName": {
+            "type": "string"
+          },
+          "countryCode": {
+            "type": "string"
+          },
+          "dialCode": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "SUSPENDED",
+              "ON_HOLD",
+              "BLACK_LISTED"
+            ]
+          },
+          "sanctionStatus": {
+            "type": "string",
+            "enum": [
+              "SANCTIONED",
+              "NOT_SANCTIONED",
+              "PENDING",
+              "UNDER_REVIEW",
+              "CLEARED"
+            ]
+          },
+          "_oid": {
+            "type": "string"
+          },
+          "createdAt": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "updatedAt": {
+            "format": "date-time",
+            "type": "string"
+          }
+        },
+        "required": [
+          "countryName",
+          "countryCode",
+          "dialCode"
+        ]
+      },
+      "CreateUpdateResponseDto": {
+        "type": "object",
+        "properties": {
+          "data": {
+            "nullable": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CountryResponseDto"
+              }
+            ]
+          },
+          "success": {
+            "type": "boolean"
+          }
+        },
+        "required": [
+          "data",
+          "success"
+        ]
+      },
+      "CountrySearchDto": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string"
+          },
+          "fieldValue": {
+            "type": "string"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "sortBy": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "string"
+          }
+        }
+      },
+      "UpdateCountryDto": {
+        "type": "object",
+        "properties": {
+          "_oid": {
+            "type": "string",
+            "minLength": 32,
+            "maxLength": 32
+          },
+          "countryName": {
+            "type": "string",
+            "example": "India"
+          },
+          "countryCode": {
+            "type": "string",
+            "example": "IN"
+          },
+          "dialCode": {
+            "type": "string",
+            "example": "+91"
+          },
+          "status": {
+            "enum": [
+              "ACTIVE",
+              "INACTIVE",
+              "SUSPENDED",
+              "ON_HOLD",
+              "BLACK_LISTED"
+            ],
+            "type": "string",
+            "example": "ACTIVE"
+          },
+          "sanctionStatus": {
+            "enum": [
+              "SANCTIONED",
+              "NOT_SANCTIONED",
+              "PENDING",
+              "UNDER_REVIEW",
+              "CLEARED"
+            ],
+            "type": "string",
+            "example": "CLEARED"
+          }
+        }
       }
     }
   }

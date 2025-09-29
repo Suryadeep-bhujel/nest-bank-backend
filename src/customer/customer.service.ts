@@ -41,14 +41,14 @@ export class CustomerService extends BaseService {
             .leftJoinAndSelect('customers.addedBy', 'addedBy')
             // .addSelect('addedBy.id', 'addedBy.name') // ✅ only selected fields from addedBy
             .select([
-                // "customers.*",
-                'customers.id',
-                'customers.firstName',
-                'customers.lastName',
-                'customers.middleName',
-                'customers.email',
-                'customers.phoneNumber',
-                'customers._oid',
+                "customers",
+                // 'customers.id',
+                // 'customers.firstName',
+                // 'customers.lastName',
+                // 'customers.middleName',
+                // 'customers.email',
+                // 'customers.phoneNumber',
+                // 'customers._oid',
                 'customers.dateOfBirth',
                 'addedBy.id',
                 'addedBy.name',
@@ -65,22 +65,7 @@ export class CustomerService extends BaseService {
             query = query.orderBy('customers.' + this.sortBy, this.sortOrder);
         }
 
-        return await query.skip(this.offset)
-            .take(this.limit)
-            .getManyAndCount();
-        // .findAndCount({
-        //     // where: {
-        //     //     // [this.searchFieldName]: this.searchFieldValue ?   ILike(`%${this.searchFieldValue}%`) : undefined,
-        //     //     // isDeleted: false,
-        //     // },
-        //     order: {
-        //         id: 'DESC',
-        //     },
-        //     relations: ['addedBy']
-        //     // skip: this.offset,
-        //     // take: this.limit,
-        //     // relations: ['createdBy', 'updatedBy'],
-        // });
+        return await query.skip(this.offset).take(this.limit).getManyAndCount();
     }
     async findAll(user: User, search: CustomerSearchDto) {
         try {

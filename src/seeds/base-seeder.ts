@@ -11,6 +11,8 @@ import { CustomerAddress } from "@src/customer-addresses/entities/customer-addre
 import { Staff } from "@src/staff/entities/staff.entity";
 import { ModelHasRole } from "@src/model-has-role/entities/model-has-role.entity";
 import { BankAccount, BankAccountCustomers } from "@src/bank-account/entities/bank-account.entity";
+import { Country } from "@src/country/entities/country.entity";
+import { AddOnFeature } from "@src/add-on-feature/entities/add-on-feature.entity";
 type EntityClass = new (...args: any[]) => any;
 export class BaseSeeder {
     protected entities: EntityClass[] = []
@@ -41,7 +43,9 @@ export class BaseSeeder {
                 Staff,
                 ModelHasRole,
                 BankAccount,
-                BankAccountCustomers
+                BankAccountCustomers,
+                AddOnFeature,
+                Country
             ],
             synchronize: false,
         });

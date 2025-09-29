@@ -1,5 +1,6 @@
 
 type SortOrder = 'ASC' | 'DESC';
+import { v4 as uuidv4 } from 'uuid';
 export class BaseService {
     protected page: number
     protected limit: number
@@ -10,7 +11,7 @@ export class BaseService {
     protected searchFieldValue: string
     protected sortBy: string = 'id';
     protected sortOrder: SortOrder = 'ASC';
-    
+
     setSearchProperties(search: any) {
         this.limit = search.limit || 10;
         this.page = search.page || 1;
@@ -78,5 +79,9 @@ export class BaseService {
             fieldName: this.searchFieldName,
             fieldValue: this.searchFieldValue,
         };
+    }
+
+    generateOid(): string {
+        return uuidv4().replace(/-/g, '');
     }
 }
