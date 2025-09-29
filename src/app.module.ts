@@ -28,10 +28,12 @@ import { ModelHasRole } from '@src/model-has-role/entities/model-has-role.entity
 import { Customer } from '@src/customer/entities/customer.entity';
 import { CustomerAddress } from '@src/customer-addresses/entities/customer-address.entity';
 import { Staff } from '@src/staff/entities/staff.entity';
-import { BankAccountModule } from './bank-account/bank-account.module';
+import { BankAccountModule } from '@src/bank-account/bank-account.module';
 import { BankAccount, BankAccountCustomers } from '@src/bank-account/entities/bank-account.entity';
 import { AddOnFeatureModule } from '@src/add-on-feature/add-on-feature.module';
 import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity';
+import { CountryModule } from '@src/country/country.module';
+import { Country } from '@src/country/entities/country.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -43,6 +45,7 @@ import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity
       database: process.env.DB_DATABASE,
       schema: process.env.DB_SCHEMA,
       entities: [
+        Country,
         User,
         Role,
         Permission,
@@ -55,7 +58,7 @@ import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity
         ModelHasRole,
         BankAccount,
         BankAccountCustomers,
-        AddOnFeature
+        AddOnFeature,
       ],
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // set to false in production!
@@ -79,7 +82,8 @@ import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity
     RoleHasPermissionModule,
     ModelHasRoleModule,
     BankAccountModule,
-    AddOnFeatureModule
+    AddOnFeatureModule,
+    CountryModule
   ],
   controllers: [AppController],
   providers: [AppService, DateService],
