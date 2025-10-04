@@ -38,6 +38,9 @@ export class User {
     @OneToMany(() => ModelHasRole, mhr => mhr.user)
     modelHasRoles: ModelHasRole[];
 
+    @Column({ type: 'varchar', length: 100, unique: false , nullable:true})
+    userId: string;
+
     // Indirect roles (via modelHasRoles)
     @ManyToMany(() => Role, role => role.users)
     @JoinTable({

@@ -30,6 +30,13 @@ export class UsersController {
     return await this.usersService.assignRoleToUser(userOid, roles, user)
   }
 
+  @Get("/user-dropdown")
+  @UseGuards(JwtAuthGuard)
+  @ApiOkResponse({ type: CommonListReponse })
+  userDropdown(@Query() search: UserSearchDto) {
+    return this.usersService.userDropdown(search);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.usersService.findOne(+id);

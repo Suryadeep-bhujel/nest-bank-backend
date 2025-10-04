@@ -6,7 +6,7 @@ import { User } from '@src/users/entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserSearchDto } from '@src/users/dto/users-search.dto';
 import { BaseService } from '@src/common/services/base-service';
-import { ListResponseDto } from '@src/common/dto/ListResponseDto';
+import { CommonListReponse, ListResponseDto } from '@src/common/dto/ListResponseDto';
 import { UserRolesRequestDto } from '@src/users/dto/user-roles-request.dto';
 import { Role } from '@src/role/entities/role.entity';
 import { ModelHasRole } from 'src/model-has-role/entities/model-has-role.entity';
@@ -124,6 +124,36 @@ export class UsersService extends BaseService {
 				message: error.message,
 				statusCode: 500
 			}
+		}
+	}
+	async userDropdown(search: UserSearchDto): Promise<CommonListReponse> {
+		try {
+			this.setSearchProperties(search);
+			const [data, total] = await this.userRepository.findAndCount({
+				select: ['userId', 'name', '_oid'],
+				where: {
+					[this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
+				},
+				order: {
+					id: 'DESC',
+				},
+				skip: this.offset,
+				take: this.limit,
+			});
+
+			return {
+				message: 'User dropdown fetched successfully',
+				data: new ListResponseDto(data.map(user => {
+
+					return {
+						_oid: user._oid,
+						fullName: [user.name, user.userId].filter(val => !!val).join(",")
+					};
+				}), total, this.limit, this.page),
+			};
+		} catch (error) {
+			console.error('Error fetching User dropdown:', error);
+			throw new Error('User dropdown fetching failed');
 		}
 	}
 	findOne(id: number) {
