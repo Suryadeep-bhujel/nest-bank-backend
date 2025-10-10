@@ -8,10 +8,11 @@ import { AuthUser } from './decorators/user.decorator';
 import { ApiExtraModels, ApiOkResponse, ApiQuery, ApiTags } from '@nestjs/swagger';
 import { CommonListReponse } from 'src/common/dto/ListResponseDto';
 import { UserRolesRequestDto } from './dto/user-roles-request.dto';
+import { User } from './entities/user.entity';
 
 @ApiTags("Users Management")
 // @ApiExtraModels(UserSearchDto)
-
+@UseGuards(JwtAuthGuard)
 @Controller('users')
 export class UsersController {
   constructor(private readonly usersService: UsersService) { }
@@ -24,6 +25,10 @@ export class UsersController {
     return await this.usersService.findAll(search, user);
   }
 
+  @Get("/get-roles/:userOid")
+  async getUserRoles(@Param("userOid") userOid: string, @AuthUser() user:User) {
+    return await this.usersService.getRolesOfUser(userOid, user);
+  }
   @Post("/assign-role/:userOid")
   @UseGuards(JwtAuthGuard)
   async assignUserRole(@Param("userOid") userOid: string, @Body() roles: UserRolesRequestDto, @AuthUser() user) {

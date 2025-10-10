@@ -184,6 +184,10 @@ export class AddressInfoRequestDto {
     @IsOptional()
     @IsString()
     remarks?: string
+
+    @ApiProperty()
+    @IsOptional()
+    sameAddress?: boolean;
 }
 export class ContactInfoRequestDto {
     @ApiProperty()

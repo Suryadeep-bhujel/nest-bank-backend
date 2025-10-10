@@ -9,10 +9,11 @@ import { BranchManager } from "@src/branch-manager/entities/branch-manager.entit
 import { Customer } from "@src/customer/entities/customer.entity";
 import { CustomerAddress } from "@src/customer-addresses/entities/customer-address.entity";
 import { Staff } from "@src/staff/entities/staff.entity";
-import { ModelHasRole } from "@src/model-has-role/entities/model-has-role.entity";
+import { UserHasRole } from "src/model-has-role/entities/user-has-role.entity";
 import { BankAccount, BankAccountCustomers } from "@src/bank-account/entities/bank-account.entity";
 import { Country } from "@src/country/entities/country.entity";
 import { AddOnFeature } from "@src/add-on-feature/entities/add-on-feature.entity";
+import { TableIdManager } from "@src/shared/entities/table-id-manager.entity";
 type EntityClass = new (...args: any[]) => any;
 export class BaseSeeder {
     protected entities: EntityClass[] = []
@@ -32,6 +33,7 @@ export class BaseSeeder {
             database: process.env.DB_DATABASE,
             schema: process.env.DB_SCHEMA,
             entities: [
+                TableIdManager,
                 User,
                 Role,
                 Permission,
@@ -41,7 +43,7 @@ export class BaseSeeder {
                 Customer,
                 CustomerAddress,
                 Staff,
-                ModelHasRole,
+                UserHasRole,
                 BankAccount,
                 BankAccountCustomers,
                 AddOnFeature,

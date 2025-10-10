@@ -47,4 +47,5 @@ export class CountryResponseDto {
 export class CreateUpdateResponseDto extends SingleResponseDto {
     declare data: CountryResponseDto | null; // Single data item
     declare success: boolean;
+    declare message?: string;
 }

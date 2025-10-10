@@ -39,6 +39,6 @@ export class CreateBranchDto {
     branchStatus: string;
 
     @IsOptional()
-    @IsInt()
-    managerId?: number;
+    @IsString()
+    managerOid?: string;
 }

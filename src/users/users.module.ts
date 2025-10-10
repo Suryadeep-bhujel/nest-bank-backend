@@ -6,11 +6,11 @@ import { UsersController } from '@src/users/users.controller';
 import { User } from '@src/users/entities/user.entity';
 import { AppService } from '@src/app.service';
 import { Role } from '@src/role/entities/role.entity';
-import { ModelHasRole } from '@src/model-has-role/entities/model-has-role.entity';
+import { UserHasRole } from 'src/model-has-role/entities/user-has-role.entity';
 @Global()
 @Module({
   imports: [
-    TypeOrmModule.forFeature([User, Role, ModelHasRole])
+    TypeOrmModule.forFeature([User, Role, UserHasRole])
   ],
   controllers: [UsersController],
   providers: [UsersService, AppService],

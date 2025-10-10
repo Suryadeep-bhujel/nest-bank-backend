@@ -5,30 +5,20 @@ import { User } from "@src/users/entities/user.entity";
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn, Unique } from "typeorm";
 
 @Entity({ name: 'user_has_roles' })
-@Unique(['userId', 'roleId'])
-export class ModelHasRole {
-
-  @PrimaryGeneratedColumn({ type: 'bigint' })
-  id: bigint;
-
-  @Column({ type: 'bigint' })
-  roleId: bigint;
+@Unique(['userOid', 'roleOid'])
+export class UserHasRole extends CommonEntity {
+  @Column({ type: 'varchar', length: 32, nullable: false })
+  roleOid: string;
 
   @ManyToOne(() => Role, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'roleId' })
+  @JoinColumn({ name: 'roleOid', referencedColumnName: "_oid" })
   role: Role;
 
-  @Column({ type: 'bigint' })
-  userId: bigint;
+  @Column({ type: 'varchar', length: 32, nullable: false })
+  userOid: string;
 
   @ManyToOne(() => User, user => user.modelHasRoles, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'userId' })
+  @JoinColumn({ name: 'userOid', referencedColumnName: '_oid' })
   user: User;
-
-  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  createdAt?: Date;
-
-  @Column({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
-  updatedAt?: Date;
 }
 

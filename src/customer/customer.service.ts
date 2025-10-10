@@ -56,9 +56,11 @@ export class CustomerService extends BaseService {
                 'addedBy.email'
             ]);
         if (this.searchFieldName) {
-            query = query.where({
-                [this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
-            })
+            // query = query.where({
+            //     [this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
+            // })
+            const val = `%${this.searchFieldValue}%`;
+            query = query.where(`customers."${this.searchFieldName}"::text ILIKE :search`, { search: val });
 
         }
         if (this.sortBy && this.sortOrder) {

@@ -1,20 +1,29 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
-import { BranchManagerService } from './branch-manager.service';
-import { CreateBranchManagerDto } from './dto/create-branch-manager.dto';
-import { UpdateBranchManagerDto } from './dto/update-branch-manager.dto';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
+import { BranchManagerService } from '@src/branch-manager/branch-manager.service';
+import { CreateBranchManagerDto } from '@src/branch-manager/dto/create-branch-manager.dto';
+import { UpdateBranchManagerDto } from '@src/branch-manager/dto/update-branch-manager.dto';
+import { JwtAuthGuard } from '@src/auth/jwt-auth.guard';
+import { ManagerSearchDto } from '@src/branch-manager/dto/manager-search.dto';
+import { AuthUser } from '@src/users/decorators/user.decorator';
+import { User } from '@src/users/entities/user.entity';
+import { ApiBody, ApiOkResponse } from '@nestjs/swagger';
+import { CommonListReponse } from 'src/common/dto/ListResponseDto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('branch-manager')
 export class BranchManagerController {
-  constructor(private readonly branchManagerService: BranchManagerService) {}
+  constructor(private readonly branchManagerService: BranchManagerService) { }
 
-  @Post()
+  @Post("/add-branch-manager")
   create(@Body() createBranchManagerDto: CreateBranchManagerDto) {
     return this.branchManagerService.create(createBranchManagerDto);
   }
 
   @Get()
-  findAll() {
-    return this.branchManagerService.findAll();
+  @ApiBody({ type: ManagerSearchDto })
+  @ApiOkResponse({ type: CommonListReponse })
+  findAll(@Query() search: ManagerSearchDto, @AuthUser() user: User) {
+    return this.branchManagerService.findAll(search, user);
   }
 
   @Get(':id')

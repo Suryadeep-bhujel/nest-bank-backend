@@ -29,6 +29,7 @@ export class BranchService extends BaseService {
             return {
                 message: 'Branch created successfully',
                 data: newBranchData,
+                success : true,
             };
         } catch (error) {
             console.error('Error creating branch:', error);

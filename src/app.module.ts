@@ -24,7 +24,7 @@ import { Permission } from '@src/permission/entities/permission.entity';
 import { User } from '@src/users/entities/user.entity';
 import { Branch } from '@src/branch/entities/branch.entity';
 import { BranchManager } from '@src/branch-manager/entities/branch-manager.entity';
-import { ModelHasRole } from '@src/model-has-role/entities/model-has-role.entity';
+import { UserHasRole } from 'src/model-has-role/entities/user-has-role.entity';
 import { Customer } from '@src/customer/entities/customer.entity';
 import { CustomerAddress } from '@src/customer-addresses/entities/customer-address.entity';
 import { Staff } from '@src/staff/entities/staff.entity';
@@ -34,6 +34,7 @@ import { AddOnFeatureModule } from '@src/add-on-feature/add-on-feature.module';
 import { AddOnFeature } from '@src/add-on-feature/entities/add-on-feature.entity';
 import { CountryModule } from '@src/country/country.module';
 import { Country } from '@src/country/entities/country.entity';
+import { TableIdManager } from '@src/shared/entities/table-id-manager.entity';
 @Module({
   imports: [
     TypeOrmModule.forRoot({
@@ -45,6 +46,7 @@ import { Country } from '@src/country/entities/country.entity';
       database: process.env.DB_DATABASE,
       schema: process.env.DB_SCHEMA,
       entities: [
+        TableIdManager,
         Country,
         User,
         Role,
@@ -55,7 +57,7 @@ import { Country } from '@src/country/entities/country.entity';
         Customer,
         CustomerAddress,
         Staff,
-        ModelHasRole,
+        UserHasRole,
         BankAccount,
         BankAccountCustomers,
         AddOnFeature,

@@ -65,21 +65,20 @@ export class RoleService extends BaseService {
         }
     }
 
-    private async roleList(search: RoleSearchDto) {
+    private async roleList(search: RoleSearchDto, selectFields?: string[]) {
         this.setSearchProperties(search);
+        if (!selectFields || selectFields.length === 0) {
+            selectFields = ['roles.id',
+                'roles._oid',
+                'roles.name',
+                'roles.createdAt',
+                'roles.updatedAt']
+        }
         console.log("search ", this.limit, this.offset, this.sortBy, this.sortOrder)
         let query = this.roleRepository
             .createQueryBuilder('roles')
             // .leftJoinAndSelect("roles.permissions", "permissions")
-            .select([
-                'roles.id',
-                'roles._oid',
-                'roles.name',
-                'roles.createdAt',
-                'roles.updatedAt',
-                // "permissions.permissionId",
-                // "permissions.roleId",
-            ])
+            .select(selectFields)
         // .leftJoin('role_has_permissions', 'rhp', 'rhp.roleId = roles.id')
         // .addSelect('COUNT(rhp.permissionId)', 'permissionsCount') // 👈 count permissions
         // .groupBy('roles.id');
@@ -100,14 +99,6 @@ export class RoleService extends BaseService {
     async findAll(search: RoleSearchDto) {
         try {
             const [roles, count] = await this.roleList(search);
-            console.log("roles", roles)
-            // roles.map(item => {
-            //     Object.assign(item ,{
-            //         permissionCount: item.permissions?.length,
-            //     })
-
-            //     return item;
-            // })
             return {
                 message: 'Roles retrieved successfully',
                 data: new ListResponseDto(roles, count, this.limit, this.page),
@@ -193,6 +184,7 @@ export class RoleService extends BaseService {
                 ])
                 .where('role._oid = :oid', { oid: _oid })
                 .getOne();
+            console.log("reisdfsdfsfd", role)
             if (!role) {
                 throw new NotFoundException(`Role with oid ${_oid} not found`);
             }
@@ -223,5 +215,19 @@ export class RoleService extends BaseService {
 
     remove(id: number) {
         return `This action removes a #${id} role`;
+    }
+    async roleDropdown(search: RoleSearchDto) {
+        try {
+            this.setSearchProperties(search);
+            const selectFields = ['roles._oid', 'roles.name']
+            const [roles, count] = await this.roleList(search, selectFields);
+            return {
+                message: 'Roles retrieved successfully',
+                data: new ListResponseDto(roles, count, this.limit, this.page),
+            }
+        } catch (error) {
+            console.log("errorerror", error)
+        }
+        return `This action returns all role`;
     }
 }

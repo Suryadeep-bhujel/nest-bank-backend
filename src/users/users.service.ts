@@ -9,7 +9,7 @@ import { BaseService } from '@src/common/services/base-service';
 import { CommonListReponse, ListResponseDto } from '@src/common/dto/ListResponseDto';
 import { UserRolesRequestDto } from '@src/users/dto/user-roles-request.dto';
 import { Role } from '@src/role/entities/role.entity';
-import { ModelHasRole } from 'src/model-has-role/entities/model-has-role.entity';
+import { UserHasRole } from 'src/model-has-role/entities/user-has-role.entity';
 import { AppService } from 'src/app.service';
 
 @Injectable()
@@ -19,8 +19,8 @@ export class UsersService extends BaseService {
 		private readonly userRepository: Repository<User>,
 		@InjectRepository(Role)
 		private readonly roleRepository: Repository<Role>,
-		@InjectRepository(ModelHasRole)
-		private readonly roleModalRepository: Repository<ModelHasRole>,
+		@InjectRepository(UserHasRole)
+		private readonly roleModalRepository: Repository<UserHasRole>,
 		private readonly appService: AppService
 	) {
 		super()
@@ -82,6 +82,30 @@ export class UsersService extends BaseService {
 			throw error;
 		}
 	}
+	async getRolesOfUser(userOid: string, user: User) {
+		try {
+			const user: User | null = await this.userRepository.findOne({ where: { _oid: userOid } })
+			if (!user) {
+				throw new NotFoundException(`User not found.`)
+			}
+			const roles = await this.roleModalRepository.find({
+				where: {
+					userOid: user._oid
+				},
+				relations: ['role'],
+			})
+			return {
+				message: "Roles fetched successfully.",
+				data: {
+					roles: roles.map(role => role.role.name),
+					user: user
+				}
+			}
+
+		} catch (error) {
+
+		}
+	}
 	async assignRoleToUser(userOid: string, roles: UserRolesRequestDto, user: User) {
 		try {
 			const userInfo = await this.userRepository.findOne({ where: { _oid: userOid } })
@@ -105,24 +129,26 @@ export class UsersService extends BaseService {
 			if (missing.length) {
 				throw new NotFoundException(`Role with Name ${missing.join(',')} not found.`)
 			}
-			const data: ModelHasRole[] = [];
+			const data: UserHasRole[] = [];
 			roleList.map(roleItem => {
 				data.push({
-					// _oid: this.appService.generateOid(),
-					roleId: roleItem.id,
-					userId: userInfo.id
-				} as ModelHasRole)
+					_oid: this.appService.generateOid(),
+					roleOid: roleItem._oid,
+					userOid: userInfo._oid
+				} as UserHasRole)
 			})
-			await this.roleModalRepository.delete({ roleId: In(roleList.map(item => item.id)), userId: userInfo.id })
+			await this.roleModalRepository.delete({ roleOid: In(roleList.map(item => item._oid)), userOid: userInfo._oid })
 			await this.roleModalRepository.save(data);
 			return {
-				message: "Role assigned successfully."
+				message: "Role assigned successfully.",
+				success: true,
 			}
 		} catch (error) {
 			console.log("error is ", error)
 			return {
 				message: error.message,
-				statusCode: 500
+				statusCode: 500,
+				success: false,
 			}
 		}
 	}
@@ -131,9 +157,11 @@ export class UsersService extends BaseService {
 			this.setSearchProperties(search);
 			const [data, total] = await this.userRepository.findAndCount({
 				select: ['userId', 'name', '_oid'],
-				where: {
-					[this.searchFieldName]: this.searchFieldValue ? ILike(`%${this.searchFieldValue}%`) : undefined,
-				},
+				where:
+					[
+						{ name: ILike(`%${this.searchFieldValue}%`) },
+						{ userId: ILike(`%${this.searchFieldValue}%`) }
+					],
 				order: {
 					id: 'DESC',
 				},

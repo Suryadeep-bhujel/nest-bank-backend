@@ -3,7 +3,7 @@ import { Entity, PrimaryGeneratedColumn, Column, Unique, BeforeInsert, OneToMany
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { Role } from '@src/role/entities/role.entity';
-import { ModelHasRole } from '@src/model-has-role/entities/model-has-role.entity';
+import { UserHasRole } from 'src/model-has-role/entities/user-has-role.entity';
 export enum UserRole {
     ADMIN = 'admin',
     SUPER_ADMIN = 'super-admin',
@@ -35,8 +35,8 @@ export class User {
     @Column()
     email: string;
 
-    @OneToMany(() => ModelHasRole, mhr => mhr.user)
-    modelHasRoles: ModelHasRole[];
+    @OneToMany(() => UserHasRole, mhr => mhr.user)
+    modelHasRoles: UserHasRole[];
 
     @Column({ type: 'varchar', length: 100, unique: false , nullable:true})
     userId: string;

@@ -405,9 +405,9 @@ export class BankAccountService extends BaseService {
             }
 
         }
-        if (this.sortBy && this.sortOrder) {
-            query = query.orderBy('bank_accounts.' + this.sortBy, this.sortOrder);
-        }
+        // if (this.sortBy && this.sortOrder) {
+        //     query = query.orderBy('bank_accounts.' + this.sortBy, this.sortOrder);
+        // }
 
         return await query.skip(this.offset)
             .take(this.limit)

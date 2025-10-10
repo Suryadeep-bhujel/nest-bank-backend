@@ -9,6 +9,7 @@ import { RoleSearchDto } from './dto/RoleSearchDto';
 import { AuthUser } from '@src/users/decorators/user.decorator';
 import { RoleDetailResponseDto } from './dto/role-detail.dto';
 
+@UseGuards(JwtAuthGuard)
 @Controller('role')
 export class RoleController {
     constructor(private readonly roleService: RoleService) { }
@@ -33,12 +34,18 @@ export class RoleController {
     async updatePermissionOfRole(@Param("oid") oid: string, @Body() requestBody: UpdatePermissionOfRoleDto, @AuthUser() user: any) {
         return await this.roleService.updatePermissionOfRole(oid, requestBody, user);
     }
+    @Get('role-dropdown')
+    @ApiOkResponse({ type: CommonListReponse })
+    async roleDropdown(@Query() search: RoleSearchDto) {
+        return await this.roleService.roleDropdown(search);
+    }
+    
     @Get(':oid')
-    @UseGuards(JwtAuthGuard)
     @ApiOkResponse({ type: RoleDetailResponseDto })
     findOne(@Param('oid') oid: string) {
         return this.roleService.findOne(oid);
     }
+
 
     @Patch(':id')
     update(@Param('id') id: string, @Body() updateRoleDto: UpdateRoleDto) {

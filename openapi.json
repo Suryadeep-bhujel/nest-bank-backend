@@ -92,6 +92,29 @@
         ]
       }
     },
+    "/api/users/get-roles/{userOid}": {
+      "get": {
+        "operationId": "getUserRoles",
+        "parameters": [
+          {
+            "name": "userOid",
+            "required": true,
+            "in": "path",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Users Management"
+        ]
+      }
+    },
     "/api/users/assign-role/{userOid}": {
       "post": {
         "operationId": "assignUserRole",
@@ -122,6 +145,76 @@
               "application/json": {
                 "schema": {
                   "type": "object"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Users Management"
+        ]
+      }
+    },
+    "/api/users/user-dropdown": {
+      "get": {
+        "operationId": "userDropdown",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonListReponse"
                 }
               }
             }
@@ -490,7 +583,7 @@
         ]
       }
     },
-    "/api/branch-manager": {
+    "/api/branch-manager/add-branch-manager": {
       "post": {
         "operationId": "create",
         "parameters": [],
@@ -519,17 +612,78 @@
         "tags": [
           "BranchManager"
         ]
-      },
+      }
+    },
+    "/api/branch-manager": {
       "get": {
         "operationId": "findAll",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ManagerSearchDto"
+              }
+            }
+          }
+        },
         "responses": {
           "200": {
             "description": "",
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/CommonListReponse"
                 }
               }
             }
@@ -1726,6 +1880,76 @@
         ]
       }
     },
+    "/api/role/role-dropdown": {
+      "get": {
+        "operationId": "roleDropdown",
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CommonListReponse"
+                }
+              }
+            }
+          }
+        },
+        "tags": [
+          "Role"
+        ]
+      }
+    },
     "/api/role/{oid}": {
       "get": {
         "operationId": "findOne",
@@ -2493,7 +2717,56 @@
     "/api/country/list": {
       "get": {
         "operationId": "findAll",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "fieldName",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "fieldValue",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "limit",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "number"
+            }
+          },
+          {
+            "name": "sortBy",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "sortOrder",
+            "required": false,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
         "requestBody": {
           "required": true,
           "content": {
@@ -2743,8 +3016,8 @@
           "branchStatus": {
             "type": "string"
           },
-          "managerId": {
-            "type": "number"
+          "managerOid": {
+            "type": "string"
           }
         },
         "required": [
@@ -2766,6 +3039,29 @@
       "CreateBranchManagerDto": {
         "type": "object",
         "properties": {}
+      },
+      "ManagerSearchDto": {
+        "type": "object",
+        "properties": {
+          "fieldName": {
+            "type": "string"
+          },
+          "fieldValue": {
+            "type": "string"
+          },
+          "page": {
+            "type": "number"
+          },
+          "limit": {
+            "type": "number"
+          },
+          "sortBy": {
+            "type": "string"
+          },
+          "sortOrder": {
+            "type": "string"
+          }
+        }
       },
       "UpdateBranchManagerDto": {
         "type": "object",
@@ -3310,6 +3606,9 @@
           },
           "remarks": {
             "type": "string"
+          },
+          "sameAddress": {
+            "type": "boolean"
           }
         }
       },
@@ -3661,6 +3960,9 @@
           },
           "success": {
             "type": "boolean"
+          },
+          "message": {
+            "type": "string"
           }
         },
         "required": [

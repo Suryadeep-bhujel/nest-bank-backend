@@ -33,8 +33,8 @@ export class Branch {
     @Column()
     branchName?: string;
 
-    @Column({ nullable: true })
-    managerId?: number;
+    @Column({ nullable: true, type: "varchar", length : 32, unique: true })
+    managerOid?: string;
 
     @Column()
     branchCode?: string;
@@ -57,8 +57,8 @@ export class Branch {
     @Column()
     branchType?: string;
 
-    @ManyToOne(() => User, (staff) => staff.id, { nullable: true })
-    @JoinColumn({ name: 'managerId' })
+    @ManyToOne(() => User, (staff) => staff._oid, { nullable: true })
+    @JoinColumn({ name: 'managerOid', referencedColumnName: '_oid' })
     manager?: User | null;
 
     @Column()

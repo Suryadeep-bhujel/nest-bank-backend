@@ -39,9 +39,9 @@ export class ListResponseDto {
 export class CommonListReponse {
     @ApiProperty()
     @IsString()
-    message?: string;
+    declare message?: string;
 
     @ApiProperty()
     @IsArray()
-    data?: ListResponseDto
+    declare data?: ListResponseDto
 }

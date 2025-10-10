@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Query } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiTags } from '@nestjs/swagger';
 import { CountryService } from '@src/country/country.service';
 import { CreateCountryDto, CreateUpdateResponseDto } from '@src/country/dto/create-country.dto';
@@ -25,7 +25,7 @@ export class CountryController {
     @Get("/list")
     @ApiBody({ type: CountrySearchDto })
     @ApiOkResponse({ type: CommonListReponse })
-    async findAll(@Body() search: CountrySearchDto, @AuthUser() user: User) {
+    async findAll(@Query() search: CountrySearchDto, @AuthUser() user: User) {
         return await this.countryService.findAll(search, user);
     }
     @Get("/country-dropdown")

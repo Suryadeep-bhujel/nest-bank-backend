@@ -89,6 +89,9 @@ export class Customer extends CommonEntity {
     @JoinColumn({ name: 'addedByStaffId' })
     addedBy?: User | null;
 
+    @Column({ type: 'varchar', length: 100, unique: false , nullable:true})
+    customerId: string;
+
     @BeforeInsert()
     setDefaultValues() {
         console.log('Setting default values...');
