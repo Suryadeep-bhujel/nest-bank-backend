@@ -1,0 +1,42 @@
+# Dependencies
+node_modules
+npm-debug.log*
+
+# Test and coverage
+test
+coverage
+*.spec.ts
+
+# Build artifacts
+dist
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Git (but keep .gitmodules as we need it for submodule info)
+.git
+
+# IDE
+.vscode
+.idea
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+Dockerfile*
+docker-compose*.yml
+.dockerignore
+
+# Misc
+*.md
+!README.md
+.prettierrc
+.eslintrc*
+eslint.config.mjs
