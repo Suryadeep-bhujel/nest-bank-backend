@@ -78,5 +78,5 @@ RUN npm config set strict-ssl false && npm install --production && npm config de
 RUN chown -R appuser:appuser /app
 USER appuser
 
-EXPOSE 3000
+EXPOSE 80
 CMD ["node", "dist/src/main.js"]

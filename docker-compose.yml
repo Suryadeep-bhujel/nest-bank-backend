@@ -9,7 +9,7 @@ services:
       target: runtime
     env_file: .env
     ports:
-      - "8080:3000"
+      - "8080:80"
     restart: unless-stopped
     networks:
       - backend-net
