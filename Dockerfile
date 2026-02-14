@@ -2,24 +2,24 @@
 FROM node:20-bookworm-slim AS base
 ARG NPM_TOKEN
 ENV NPM_TOKEN=${NPM_TOKEN} \
-    npm_config_fund=false \
-    npm_config_audit=false \
-    npm_config_foreground_scripts=true \
-    NPM_CONFIG_LOGLEVEL=verbose \
-    NODE_OPTIONS=--max-old-space-size=3072 \
-    HUSKY=0
+  npm_config_fund=false \
+  npm_config_audit=false \
+  npm_config_foreground_scripts=true \
+  NPM_CONFIG_LOGLEVEL=verbose \
+  NODE_OPTIONS=--max-old-space-size=3072 \
+  HUSKY=0
 
 WORKDIR /app
 
 # Build essentials for native deps
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    git python3 make g++ \
+  git python3 make g++ \
   && rm -rf /var/lib/apt/lists/*
 
 # If token provided, create minimal .npmrc (adjust registry if needed)
 RUN if [ -n "$NPM_TOKEN" ]; then \
-      printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" > /root/.npmrc ; \
-    fi
+  printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" > /root/.npmrc ; \
+  fi
 
 # Initialize git submodule directory structure
 RUN mkdir -p @bank-app-common
@@ -32,6 +32,7 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 # Copy git submodule
 COPY .gitmodules ./
+COPY .env .env
 COPY @bank-app-common ./@bank-app-common
 # install all deps (including dev) for dev iteration
 RUN npm config set strict-ssl false && npm install && npm config delete strict-ssl
@@ -49,6 +50,7 @@ COPY package*.json package-lock.json* ./
 COPY tsconfig*.json ./
 # Copy git submodule
 COPY .gitmodules ./
+COPY .env .env
 COPY @bank-app-common ./@bank-app-common
 # Install all deps (including dev) because we need typescript/build tools
 # Set npm to use strict-ssl=false temporarily if SSL issues occur in the environment
@@ -69,6 +71,7 @@ RUN useradd --user-group --create-home --shell /bin/false appuser
 # Copy only compiled artifacts + package files
 COPY --from=build /app/dist ./dist
 COPY package*.json ./
+COPY .env .env
 
 # Install production-only dependencies
 RUN npm config set strict-ssl false && npm install --production && npm config delete strict-ssl
