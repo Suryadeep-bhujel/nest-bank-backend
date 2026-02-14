@@ -32,7 +32,6 @@ COPY package*.json ./
 COPY tsconfig*.json ./
 # Copy git submodule
 COPY .gitmodules ./
-COPY .env .env
 COPY @bank-app-common ./@bank-app-common
 # install all deps (including dev) for dev iteration
 RUN npm config set strict-ssl false && npm install && npm config delete strict-ssl
@@ -50,7 +49,6 @@ COPY package*.json package-lock.json* ./
 COPY tsconfig*.json ./
 # Copy git submodule
 COPY .gitmodules ./
-COPY .env .env
 COPY @bank-app-common ./@bank-app-common
 # Install all deps (including dev) because we need typescript/build tools
 # Set npm to use strict-ssl=false temporarily if SSL issues occur in the environment
