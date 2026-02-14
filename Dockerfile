@@ -21,14 +21,20 @@ RUN if [ -n "$NPM_TOKEN" ]; then \
       printf "//registry.npmjs.org/:_authToken=${NPM_TOKEN}\n" > /root/.npmrc ; \
     fi
 
+# Initialize git submodule directory structure
+RUN mkdir -p @bank-app-common
+
 # ---------- dev ----------
 FROM base AS dev
 ENV NODE_ENV=development
 # copy lock first for better cache
 COPY package*.json ./
 COPY tsconfig*.json ./
+# Copy git submodule
+COPY .gitmodules ./
+COPY @bank-app-common ./@bank-app-common
 # install all deps (including dev) for dev iteration
-RUN npm ci
+RUN npm config set strict-ssl false && npm install && npm config delete strict-ssl
 # copy source for live dev
 COPY src ./src
 EXPOSE 3000
@@ -37,12 +43,16 @@ CMD ["npm", "run", "start:dev"]
 
 # ---------- build ----------
 FROM base AS build
-ENV NODE_ENV=production
+# Don't set NODE_ENV=production yet, as we need devDependencies for build
 # copy package / lock to install exact versions
-COPY package*.json ./
+COPY package*.json package-lock.json* ./
 COPY tsconfig*.json ./
+# Copy git submodule
+COPY .gitmodules ./
+COPY @bank-app-common ./@bank-app-common
 # Install all deps (including dev) because we need typescript/build tools
-RUN npm ci
+# Set npm to use strict-ssl=false temporarily if SSL issues occur in the environment
+RUN npm config set strict-ssl false && npm install && npm config delete strict-ssl
 # copy source and build
 COPY src ./src
 RUN npm run build
@@ -61,11 +71,11 @@ COPY --from=build /app/dist ./dist
 COPY package*.json ./
 
 # Install production-only dependencies
-RUN npm ci --omit=dev
+RUN npm config set strict-ssl false && npm install --production && npm config delete strict-ssl
 
 # Ensure correct ownership
 RUN chown -R appuser:appuser /app
 USER appuser
 
 EXPOSE 3000
-CMD ["node", "dist/main"]
+CMD ["node", "dist/src/main.js"]

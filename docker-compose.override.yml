@@ -1,0 +1,10 @@
+version: "3.8"
+
+services:
+  web:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
+  dev:
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
