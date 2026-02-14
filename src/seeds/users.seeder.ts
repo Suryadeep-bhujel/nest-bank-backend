@@ -22,9 +22,9 @@ async function seed() {
             await userRepo.save([
                 {
                     name: 'Admin',
-                    email: 'admin@example.com',
+                    email: 'admin-user-1',
                     password: bcrypt.hashSync('admin1234', 10),
-                    username: 'admin',
+                    username: 'admin-user-1',
                     _oid: uuidv4().replace(/-/g, ''),
                     role: 'admin',
                 },

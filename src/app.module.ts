@@ -65,6 +65,9 @@ import { TableIdManager } from '@src/shared/entities/table-id-manager.entity';
       // entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true, // set to false in production!
       logging: false, // if you want to see SQL queries in the console
+      ssl: {
+        rejectUnauthorized: false, // set true and provide CA in production
+      }, // This is only require when connecting remote DB
     }),
     UsersModule,
     BranchModule,

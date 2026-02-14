@@ -50,6 +50,9 @@ export class BaseSeeder {
                 Country
             ],
             synchronize: false,
+            ssl: {
+                rejectUnauthorized: false, // set true and provide CA in production
+            },
         });
     }
 

@@ -1,43 +1,18 @@
-services:
-  db:
-    container_name: bank-backend-db
-    image: postgres:16-alpine
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: bankuser
-      POSTGRES_PASSWORD: bankpass
-      POSTGRES_DB: bankdb
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U bankuser -d bankdb"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+version: "3.8"
 
+services:
   web:
     container_name: bank-backend-web
     build:
       context: .
       dockerfile: Dockerfile
       target: runtime
+    env_file: .env
     ports:
       - "8080:3000"
-    environment:
-      DB_TYPE: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USERNAME: bankuser
-      DB_PASSWORD: bankpass
-      DB_DATABASE: bankdb
-      DB_SCHEMA: public
-      PORT: 3000
-    depends_on:
-      db:
-        condition: service_healthy
     restart: unless-stopped
+    networks:
+      - backend-net
 
   dev:
     container_name: bank-backend-dev
@@ -45,27 +20,24 @@ services:
       context: .
       dockerfile: Dockerfile
       target: dev
+    env_file: .env
     command: ["npm", "run", "start:dev"]
     ports:
       - "3000:3000"
     environment:
-      DB_TYPE: postgres
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USERNAME: bankuser
-      DB_PASSWORD: bankpass
-      DB_DATABASE: bankdb
-      DB_SCHEMA: public
       PORT: 3000
       CHOKIDAR_USEPOLLING: "true"
       WATCHPACK_POLLING: "true"
       npm_config_ignore_scripts: "false"
     volumes:
-      - .:/app
-      - /app/node_modules
-    depends_on:
-      db:
-        condition: service_healthy
+      - ./:/app:delegated
+      - node_modules:/app/node_modules
+    networks:
+      - backend-net
+
+networks:
+  backend-net:
+    driver: bridge
 
 volumes:
-  postgres_data:
+  node_modules:
