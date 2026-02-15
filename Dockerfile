@@ -69,7 +69,7 @@ RUN useradd --user-group --create-home --shell /bin/false appuser
 # Copy only compiled artifacts + package files
 COPY --from=build /app/dist ./dist
 COPY package*.json ./
-COPY .env .env
+# COPY .env .env // Don't copy .env for security; expect it to be provided via env vars or secrets in production // use only for local testing with docker-composez
 
 # Install production-only dependencies
 RUN npm config set strict-ssl false && npm install --production && npm config delete strict-ssl

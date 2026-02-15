@@ -22,6 +22,20 @@
         ]
       }
     },
+    "/api/health": {
+      "get": {
+        "operationId": "health",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "App"
+        ]
+      }
+    },
     "/api/users/user-list": {
       "get": {
         "operationId": "findAll",
